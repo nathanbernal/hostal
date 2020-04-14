@@ -510,13 +510,13 @@ COMMENT ON COLUMN h_usuario_perfil.nombre IS
 ALTER TABLE h_usuario_perfil ADD CONSTRAINT usuario_perfil_pk PRIMARY KEY ( usuario_perfil_id );
 
 CREATE TABLE huesped_habitacion (
-    huesped_habitacion_id  NUMBER NOT NULL,
-    huesped_id             NUMBER NOT NULL,
-    habitacion_id          NUMBER NOT NULL
+    h_huesped_habitacion_id  NUMBER NOT NULL,
+    huesped_id               NUMBER NOT NULL,
+    habitacion_id            NUMBER NOT NULL
 );
 
 ALTER TABLE huesped_habitacion
-    ADD CONSTRAINT huesped_habitacion_pk PRIMARY KEY ( huesped_habitacion_id,
+    ADD CONSTRAINT huesped_habitacion_pk PRIMARY KEY ( h_huesped_habitacion_id,
                                                        huesped_id,
                                                        habitacion_id );
 
@@ -561,7 +561,7 @@ ALTER TABLE h_oc_huesped
         REFERENCES h_orden_compra ( orden_compra_id );
 
 ALTER TABLE huesped_habitacion
-    ADD CONSTRAINT oc_huesped_fk FOREIGN KEY ( huesped_habitacion_id,
+    ADD CONSTRAINT oc_huesped_fk FOREIGN KEY ( h_huesped_habitacion_id,
                                                huesped_id )
         REFERENCES h_oc_huesped ( oc_huesped_id,
                                   orden_compra_id );
