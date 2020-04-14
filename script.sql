@@ -510,13 +510,13 @@ COMMENT ON COLUMN h_usuario_perfil.nombre IS
 ALTER TABLE h_usuario_perfil ADD CONSTRAINT usuario_perfil_pk PRIMARY KEY ( usuario_perfil_id );
 
 CREATE TABLE huesped_habitacion (
-    h_huesped_habitacion_id  NUMBER NOT NULL,
-    huesped_id               NUMBER NOT NULL,
-    habitacion_id            NUMBER NOT NULL
+    huesped_habitacion_id  NUMBER NOT NULL,
+    huesped_id             NUMBER NOT NULL,
+    habitacion_id          NUMBER NOT NULL
 );
 
 ALTER TABLE huesped_habitacion
-    ADD CONSTRAINT huesped_habitacion_pk PRIMARY KEY ( h_huesped_habitacion_id,
+    ADD CONSTRAINT huesped_habitacion_pk PRIMARY KEY ( huesped_habitacion_id,
                                                        huesped_id,
                                                        habitacion_id );
 
@@ -561,7 +561,7 @@ ALTER TABLE h_oc_huesped
         REFERENCES h_orden_compra ( orden_compra_id );
 
 ALTER TABLE huesped_habitacion
-    ADD CONSTRAINT oc_huesped_fk FOREIGN KEY ( h_huesped_habitacion_id,
+    ADD CONSTRAINT oc_huesped_fk FOREIGN KEY ( huesped_habitacion_id,
                                                huesped_id )
         REFERENCES h_oc_huesped ( oc_huesped_id,
                                   orden_compra_id );
@@ -642,6 +642,182 @@ ALTER TABLE h_usuario
     ADD CONSTRAINT usuario_persona_fk FOREIGN KEY ( persona_id )
         REFERENCES h_persona ( persona_id );
 
+CREATE SEQUENCE h_asistente_asistente_id_seq START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_asistente_asistente_id_trg BEFORE
+    INSERT ON h_asistente
+    FOR EACH ROW
+    WHEN ( new.asistente_id IS NULL )
+BEGIN
+    :new.asistente_id := h_asistente_asistente_id_seq.nextval;
+END;
+/
+
+CREATE SEQUENCE h_comuna_comuna_id_seq START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_comuna_comuna_id_trg BEFORE
+    INSERT ON h_comuna
+    FOR EACH ROW
+    WHEN ( new.comuna_id IS NULL )
+BEGIN
+    :new.comuna_id := h_comuna_comuna_id_seq.nextval;
+END;
+/
+
+CREATE SEQUENCE h_habitacion_habitacion_id_seq START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_habitacion_habitacion_id_trg BEFORE
+    INSERT ON h_habitacion
+    FOR EACH ROW
+    WHEN ( new.habitacion_id IS NULL )
+BEGIN
+    :new.habitacion_id := h_habitacion_habitacion_id_seq.nextval;
+END;
+/
+
+CREATE SEQUENCE h_habitacion_estado_habitacion START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_habitacion_estado_habitacion BEFORE
+    INSERT ON h_habitacion_estado
+    FOR EACH ROW
+    WHEN ( new.habitacion_estado_id IS NULL )
+BEGIN
+    :new.habitacion_estado_id := h_habitacion_estado_habitacion.nextval;
+END;
+/
+
+CREATE SEQUENCE h_habitacion_tipo_habitacion_t START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_habitacion_tipo_habitacion_t BEFORE
+    INSERT ON h_habitacion_tipo
+    FOR EACH ROW
+    WHEN ( new.habitacion_tipo_id IS NULL )
+BEGIN
+    :new.habitacion_tipo_id := h_habitacion_tipo_habitacion_t.nextval;
+END;
+/
+
+CREATE SEQUENCE h_menu_menu_id_seq START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_menu_menu_id_trg BEFORE
+    INSERT ON h_menu
+    FOR EACH ROW
+    WHEN ( new.menu_id IS NULL )
+BEGIN
+    :new.menu_id := h_menu_menu_id_seq.nextval;
+END;
+/
+
+CREATE SEQUENCE h_minuta_minuta_id_seq START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_minuta_minuta_id_trg BEFORE
+    INSERT ON h_minuta
+    FOR EACH ROW
+    WHEN ( new.minuta_id IS NULL )
+BEGIN
+    :new.minuta_id := h_minuta_minuta_id_seq.nextval;
+END;
+/
+
+CREATE SEQUENCE h_modulo_modulo_id_seq START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_modulo_modulo_id_trg BEFORE
+    INSERT ON h_modulo
+    FOR EACH ROW
+    WHEN ( new.modulo_id IS NULL )
+BEGIN
+    :new.modulo_id := h_modulo_modulo_id_seq.nextval;
+END;
+/
+
+CREATE SEQUENCE h_oc_huesped_oc_huesped_id_seq START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_oc_huesped_oc_huesped_id_trg BEFORE
+    INSERT ON h_oc_huesped
+    FOR EACH ROW
+    WHEN ( new.oc_huesped_id IS NULL )
+BEGIN
+    :new.oc_huesped_id := h_oc_huesped_oc_huesped_id_seq.nextval;
+END;
+/
+
+CREATE SEQUENCE h_oc_items_oc_item_id_seq START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_oc_items_oc_item_id_trg BEFORE
+    INSERT ON h_oc_items
+    FOR EACH ROW
+    WHEN ( new.oc_item_id IS NULL )
+BEGIN
+    :new.oc_item_id := h_oc_items_oc_item_id_seq.nextval;
+END;
+/
+
+CREATE SEQUENCE h_orden_compra_orden_compra_id START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_orden_compra_orden_compra_id BEFORE
+    INSERT ON h_orden_compra
+    FOR EACH ROW
+    WHEN ( new.orden_compra_id IS NULL )
+BEGIN
+    :new.orden_compra_id := h_orden_compra_orden_compra_id.nextval;
+END;
+/
+
+CREATE SEQUENCE h_orden_pedido_orden_pedido_id START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_orden_pedido_orden_pedido_id BEFORE
+    INSERT ON h_orden_pedido
+    FOR EACH ROW
+    WHEN ( new.orden_pedido_id IS NULL )
+BEGIN
+    :new.orden_pedido_id := h_orden_pedido_orden_pedido_id.nextval;
+END;
+/
+
+CREATE SEQUENCE h_organismo_organismo_id_seq START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_organismo_organismo_id_trg BEFORE
+    INSERT ON h_organismo
+    FOR EACH ROW
+    WHEN ( new.organismo_id IS NULL )
+BEGIN
+    :new.organismo_id := h_organismo_organismo_id_seq.nextval;
+END;
+/
+
+CREATE SEQUENCE h_persona_persona_id_seq START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_persona_persona_id_trg BEFORE
+    INSERT ON h_persona
+    FOR EACH ROW
+    WHEN ( new.persona_id IS NULL )
+BEGIN
+    :new.persona_id := h_persona_persona_id_seq.nextval;
+END;
+/
+
+CREATE SEQUENCE h_persona_direccion_persona_di START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_persona_direccion_persona_di BEFORE
+    INSERT ON h_persona_direccion
+    FOR EACH ROW
+    WHEN ( new.persona_direccion_id IS NULL )
+BEGIN
+    :new.persona_direccion_id := h_persona_direccion_persona_di.nextval;
+END;
+/
+
+CREATE SEQUENCE h_plato_plato_id_seq START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_plato_plato_id_trg BEFORE
+    INSERT ON h_plato
+    FOR EACH ROW
+    WHEN ( new.plato_id IS NULL )
+BEGIN
+    :new.plato_id := h_plato_plato_id_seq.nextval;
+END;
+/
+
 CREATE SEQUENCE h_producto_producto_id_seq START WITH 1 NOCACHE ORDER;
 
 CREATE OR REPLACE TRIGGER h_producto_producto_id_trg BEFORE
@@ -650,5 +826,60 @@ CREATE OR REPLACE TRIGGER h_producto_producto_id_trg BEFORE
     WHEN ( new.producto_id IS NULL )
 BEGIN
     :new.producto_id := h_producto_producto_id_seq.nextval;
+END;
+/
+
+CREATE SEQUENCE h_producto_familia_producto_fa START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_producto_familia_producto_fa BEFORE
+    INSERT ON h_producto_familia
+    FOR EACH ROW
+    WHEN ( new.producto_familia_id IS NULL )
+BEGIN
+    :new.producto_familia_id := h_producto_familia_producto_fa.nextval;
+END;
+/
+
+CREATE SEQUENCE h_region_region_id_seq START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_region_region_id_trg BEFORE
+    INSERT ON h_region
+    FOR EACH ROW
+    WHEN ( new.region_id IS NULL )
+BEGIN
+    :new.region_id := h_region_region_id_seq.nextval;
+END;
+/
+
+CREATE SEQUENCE h_usuario_usuario_id_seq START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_usuario_usuario_id_trg BEFORE
+    INSERT ON h_usuario
+    FOR EACH ROW
+    WHEN ( new.usuario_id IS NULL )
+BEGIN
+    :new.usuario_id := h_usuario_usuario_id_seq.nextval;
+END;
+/
+
+CREATE SEQUENCE h_usuario_perfil_usuario_perfi START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_usuario_perfil_usuario_perfi BEFORE
+    INSERT ON h_usuario_perfil
+    FOR EACH ROW
+    WHEN ( new.usuario_perfil_id IS NULL )
+BEGIN
+    :new.usuario_perfil_id := h_usuario_perfil_usuario_perfi.nextval;
+END;
+/
+
+CREATE SEQUENCE huesped_habitacion_huesped_hab START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER huesped_habitacion_huesped_hab BEFORE
+    INSERT ON huesped_habitacion
+    FOR EACH ROW
+    WHEN ( new.huesped_habitacion_id IS NULL )
+BEGIN
+    :new.huesped_habitacion_id := huesped_habitacion_huesped_hab.nextval;
 END;
 /
