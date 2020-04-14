@@ -88,6 +88,17 @@ COMMENT ON COLUMN h_habitacion_tipo.descriptor IS
 
 ALTER TABLE h_habitacion_tipo ADD CONSTRAINT habitacion_tipo_pk PRIMARY KEY ( habitacion_tipo_id );
 
+CREATE TABLE h_huesped_habitacion (
+    huesped_habitacion_id  NUMBER NOT NULL,
+    huesped_id             NUMBER NOT NULL,
+    habitacion_id          NUMBER NOT NULL
+);
+
+ALTER TABLE h_huesped_habitacion
+    ADD CONSTRAINT huesped_habitacion_pk PRIMARY KEY ( huesped_habitacion_id,
+                                                       huesped_id,
+                                                       habitacion_id );
+
 CREATE TABLE h_menu (
     menu_id         NUMBER NOT NULL,
     nombre          VARCHAR2(100) NOT NULL,
@@ -509,17 +520,6 @@ COMMENT ON COLUMN h_usuario_perfil.nombre IS
 
 ALTER TABLE h_usuario_perfil ADD CONSTRAINT usuario_perfil_pk PRIMARY KEY ( usuario_perfil_id );
 
-CREATE TABLE huesped_habitacion (
-    huesped_habitacion_id  NUMBER NOT NULL,
-    huesped_id             NUMBER NOT NULL,
-    habitacion_id          NUMBER NOT NULL
-);
-
-ALTER TABLE huesped_habitacion
-    ADD CONSTRAINT huesped_habitacion_pk PRIMARY KEY ( huesped_habitacion_id,
-                                                       huesped_id,
-                                                       habitacion_id );
-
 ALTER TABLE h_asistente
     ADD CONSTRAINT asistente_modulo_fk FOREIGN KEY ( modulo_id )
         REFERENCES h_modulo ( modulo_id );
@@ -544,7 +544,7 @@ ALTER TABLE h_habitacion
     ADD CONSTRAINT habitacion_tipo_fk FOREIGN KEY ( habitacion_tipo_id )
         REFERENCES h_habitacion_tipo ( habitacion_tipo_id );
 
-ALTER TABLE huesped_habitacion
+ALTER TABLE h_huesped_habitacion
     ADD CONSTRAINT huesped_habitacion_fk FOREIGN KEY ( habitacion_id )
         REFERENCES h_habitacion ( habitacion_id );
 
@@ -560,7 +560,7 @@ ALTER TABLE h_oc_huesped
     ADD CONSTRAINT oc_fk FOREIGN KEY ( orden_compra_id )
         REFERENCES h_orden_compra ( orden_compra_id );
 
-ALTER TABLE huesped_habitacion
+ALTER TABLE h_huesped_habitacion
     ADD CONSTRAINT oc_huesped_fk FOREIGN KEY ( huesped_habitacion_id,
                                                huesped_id )
         REFERENCES h_oc_huesped ( oc_huesped_id,
@@ -694,6 +694,17 @@ CREATE OR REPLACE TRIGGER h_habitacion_tipo_habitacion_t BEFORE
     WHEN ( new.habitacion_tipo_id IS NULL )
 BEGIN
     :new.habitacion_tipo_id := h_habitacion_tipo_habitacion_t.nextval;
+END;
+/
+
+CREATE SEQUENCE h_huesped_habitacion_huesped_h START WITH 1 NOCACHE ORDER;
+
+CREATE OR REPLACE TRIGGER h_huesped_habitacion_huesped_h BEFORE
+    INSERT ON h_huesped_habitacion
+    FOR EACH ROW
+    WHEN ( new.huesped_habitacion_id IS NULL )
+BEGIN
+    :new.huesped_habitacion_id := h_huesped_habitacion_huesped_h.nextval;
 END;
 /
 
@@ -870,16 +881,5 @@ CREATE OR REPLACE TRIGGER h_usuario_perfil_usuario_perfi BEFORE
     WHEN ( new.usuario_perfil_id IS NULL )
 BEGIN
     :new.usuario_perfil_id := h_usuario_perfil_usuario_perfi.nextval;
-END;
-/
-
-CREATE SEQUENCE huesped_habitacion_huesped_hab START WITH 1 NOCACHE ORDER;
-
-CREATE OR REPLACE TRIGGER huesped_habitacion_huesped_hab BEFORE
-    INSERT ON huesped_habitacion
-    FOR EACH ROW
-    WHEN ( new.huesped_habitacion_id IS NULL )
-BEGIN
-    :new.huesped_habitacion_id := huesped_habitacion_huesped_hab.nextval;
 END;
 /
