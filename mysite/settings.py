@@ -87,7 +87,7 @@ DATABASES = {
         'NAME': 'HOSTALDB',
         'USER': 'HOSTALDB',
         'PASSWORD': 'HOSTALDB123',
-        'HOST':'192.168.0.12/xe',
+        'HOST':'127.0.0.1/XE',
         'PORT':'1521'
     }
 }
